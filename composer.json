@@ -1,0 +1,17 @@
+{
+    "name": "luisscura/personalplugin.php",
+    "description": "Plugin Created by Luis Scura",
+    "type": "project",
+    "license": "APACHE",
+    "authors": [
+        {
+            "name": "Luis",
+            "email": "luisfscura@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require-dev": {},
+    "autoload": {
+        "psr-4": {"Inc\\": "./inc"} 
+    }
+}
