@@ -33,28 +33,24 @@ Copyright 2019  Luis Scura
 //If somebody/something extern to wordpress get acess we avoid it.
 defined('ABSPATH') or ('Hey you should not be here!');
 
-//Defined Constansts
-define( 'PLUGIN_URL', plugin_dir_url( __FILE__ ) );//point the plugin's folder url.
-define( 'PLUGIN', plugin_basename( __FILE__ ));
-
-// //We require the autoload in order to use the namespace.
+// We require the autoload in order to use the namespace.
 require_once  'vendor/autoload.php';
 
-use Inc\Base\Activate;
-use Inc\Base\Deactivate;
+
+echo $plugin;
 
 if( class_exists( 'Inc\\Init' ) ){//autoload convetion
     Inc\Init::register_services();
 }
 
 function personal_plugin_activate(){
-    Activate::activate();
+    Inc\Base\Activate::activate();//because we have composer, just point to the file and call the method.(no neeed to use "use")
 }
-
-function personal_plugin_deactivate(){
-    Deactivate::deactivate();
-}
-
 register_activation_hook( __FILE__ , 'personal_plugin_activate');
 
+function personal_plugin_deactivate(){
+    Inc\Base\Deactivate::deactivate();
+}
 register_deactivation_hook( __FILE__ , 'personal_plugin_deactivate');
+
+

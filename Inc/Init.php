@@ -32,9 +32,8 @@ final class Init
    //we create a new instance of each class.
    private static function instantiate( $class )
    {
-        $service = new $class();
-        
-        return $service;
+        $service = new $class();   
+        return $service;    
    }
 } 
 
