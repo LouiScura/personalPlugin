@@ -36,9 +36,6 @@ defined('ABSPATH') or ('Hey you should not be here!');
 // We require the autoload in order to use the namespace.
 require_once  'vendor/autoload.php';
 
-
-echo $plugin;
-
 if( class_exists( 'Inc\\Init' ) ){//autoload convetion
     Inc\Init::register_services();
 }
@@ -52,5 +49,8 @@ function personal_plugin_deactivate(){
     Inc\Base\Deactivate::deactivate();
 }
 register_deactivation_hook( __FILE__ , 'personal_plugin_deactivate');
+
+
+
 
 

@@ -5,20 +5,32 @@
 
 namespace Inc\Pages;
 
-use Inc\Templates\AdminTemplate;
+use \Inc\Api\SettingsApi;
 
 class Admin
 {
-    public function register(){
-        add_action('admin_menu', array($this,'add_admin_pages'));//when u call a function inside antoher function(callback) you need to specify the class.(using $this).
+    public $settings;
+
+    public $pages = array();
+
+    public function __construct(){
+
+        $this->settings = new SettingsApi;//in order to look for any methods in SettingsApi, we need to instantiate.
+
+        $this->pages = [
+            [
+                'page_title' => 'Plural Plugin', 
+                'menu_title' => 'Plural Plugin', 
+                'capability' => 'manage_options', 
+                'menu_slug' => 'plural_plugin', 
+                'callback' => function() { echo '<h2>Plural Plugin</h2>'; }, 
+                'icon_url' => 'dashicons-star-empty', 
+                'position' => 110
+            ]
+        ];
     }
 
-    public function add_admin_pages(){//function that create the admin menu , a bunch of parametres and carry a callback function 
-        add_menu_page('Personal Plugin'/*pagetitle*/,'Personal Plugin'/*menutitle*/,'manage_options'/*capability*/,'personal_plugin'/*menuSlug unique*/,
-            array($this,'admin_index')/*callback function of the template*/,'dashicons-star-empty'/*Icon*/,110/*postion*/);
-    }
-
-    public function admin_index(){
-        AdminTemplate::admin_template();
+    public function register(){   
+        $this->settings->addPages( $this->pages )->register();//addPages method inside SettingsApi class, this one need an array to be passed on the parameter, one the first method is done and because this method is returning($this, which is the entire class) we can keep calling the register(chaining methods).
     }
 }
