@@ -30,10 +30,15 @@ class SettingsApi
     public function withSubPage( string $title = '' )
     {    
         if( empty( $this->admin_pages) ){
-            return $this;
+            return $this; //whenever u have a return, it's stops everything after the return.
         }
 
-        $admin_page = $this->admin_pages[0];
+        $admin_page = $this->admin_pages[0]; //we need to declare this in order to use in subpage(it takes the first array(page) which is the main admin menu page).
+
+        /*
+            because this one is gonna be all the same as admin we do $admin_page[] in every spot.\
+            submenu need parent_slug 
+        */
 
         $subpage = [
             [
@@ -53,10 +58,15 @@ class SettingsApi
 
     public function addSubPages( array $pages )
     {
-        $this->admin_subpages = array_merge( $this->admin_subpages, $pages);
+        $this->admin_subpages = array_merge( $this->admin_subpages, $pages);//we merge the subpage array into pages(this one contain all pages)
 
         return $this;
     }
+
+
+    /*
+        Wordpress allow us to add subpages with the same method 'admin_menu' & 'addAdminMenu'.
+    */
 
     public function addAdminMenu()//loop and activate all the pages at once.
     {
