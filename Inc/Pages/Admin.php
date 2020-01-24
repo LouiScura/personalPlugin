@@ -7,7 +7,7 @@ namespace Inc\Pages;
 
 use \Inc\Api\SettingsApi;
 use \Inc\Base\BaseController;
-use \Inc\Api\CallBacks\AdminCallbacks;
+use \Inc\Api\Callbacks\AdminCallbacks;
 
 class Admin extends BaseController
 {
@@ -17,10 +17,14 @@ class Admin extends BaseController
 
     public $subpages = array();
 
+    public $callbacks;
+
     public function register()
     {
         $this->settings = new SettingsApi;//in order to look for any methods in SettingsApi, we need to instantiate.
         
+        $this->callbacks = new AdminCallbacks;
+
         $this->setPages();
 
         $this->setSubpages();
@@ -37,7 +41,7 @@ class Admin extends BaseController
                 'menu_title' => 'Plural Plugin', 
                 'capability' => 'manage_options', 
                 'menu_slug' => 'plural_plugin', 
-                'callback' => function() { require_once ( $this->plugin_path . "/Templates/AdminTemplate.php" );}, 
+                'callback' => array($this->callbacks, 'adminDashboard'), 
                 'icon_url' => 'dashicons-star-empty', 
                 'position' => 110
             ]
@@ -54,7 +58,7 @@ class Admin extends BaseController
 				'menu_title' => 'CPT', 
 				'capability' => 'manage_options', 
 				'menu_slug' => 'plural_cpt', 
-				'callback' => function() { require_once ( $this->plugin_path . "/Templates/Cpt.php" );}
+				'callback' => array($this->callbacks, 'cpt')
             ],
             [
                 'parent_slug' => 'plural_plugin', 
@@ -62,7 +66,7 @@ class Admin extends BaseController
 				'menu_title' => 'Taxonomies', 
 				'capability' => 'manage_options', 
 				'menu_slug' => 'plural_taxonomies', 
-				'callback' => function() { require_once ( $this->plugin_path . "/Templates/Taxonomies.php" );}
+				'callback' => array($this->callbacks, 'taxonomies')
             ],
             [
                 'parent_slug' => 'plural_plugin', 
@@ -70,7 +74,7 @@ class Admin extends BaseController
 				'menu_title' => 'Widgets', 
 				'capability' => 'manage_options', 
 				'menu_slug' => 'plural_widgets', 
-				'callback' => function() { require_once ( $this->plugin_path . "/Templates/Widgets.php" );}
+				'callback' => array($this->callbacks, 'widgets')
             ]
         ];
 

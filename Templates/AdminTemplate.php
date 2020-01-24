@@ -1,1 +1,1 @@
-<h2>Plural Plugin Scura Luis<h2>
+<h2>Plural Plugin Scura<h2>
