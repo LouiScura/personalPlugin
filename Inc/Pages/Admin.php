@@ -11,25 +11,32 @@ use \Inc\Api\Callbacks\AdminCallbacks;
 
 class Admin extends BaseController
 {
-    public $settings;
+	public $settings_api;
+	
+	public $callbacks;
 
     public $pages = array();
 
-    public $subpages = array();
+	public $subpages = array();
+	
+	public $args = array();
 
-    public $callbacks;
 
     public function register()
     {
-        $this->settings = new SettingsApi;//in order to look for any methods in SettingsApi, we need to instantiate.
-        
-        $this->callbacks = new AdminCallbacks;
+        $this->settings_api = new SettingsApi;//in order to look for any methods in SettingsApi, we need to instantiate.
+
+		$this->callbacks = new AdminCallbacks;
 
         $this->setPages();
 
-        $this->setSubpages();
+		$this->setSubpages();
+
+		$this->setSettings();
+		$this->setSections();
+		$this->setFields();
         
-        $this->settings->addPages( $this->pages )->withSubPage( 'Dashboard' )->addSubPages($this->subpages)->register();//addPages method inside SettingsApi class, this one need an array to be passed on the parameter, one the first method is done and because this method is returning($this, which is the entire class) we can keep calling the register(chaining methods).
+        $this->settings_api->addPages( $this->pages )->withSubPage( 'Dashboard' )->addSubPages( $this->subpages )->register();//addPages method inside SettingsApi class, this one need an array to be passed on the parameter, one the first method is done and because this method is returning($this, which is the entire class) we can keep calling the register(chaining methods).
 
     }
 
@@ -58,7 +65,7 @@ class Admin extends BaseController
 				'menu_title' => 'CPT', 
 				'capability' => 'manage_options', 
 				'menu_slug' => 'plural_cpt', 
-				'callback' => array($this->callbacks, 'cpt')
+				'callback' => array( $this->callbacks, 'cpt')
             ],
             [
                 'parent_slug' => 'plural_plugin', 
@@ -66,7 +73,7 @@ class Admin extends BaseController
 				'menu_title' => 'Taxonomies', 
 				'capability' => 'manage_options', 
 				'menu_slug' => 'plural_taxonomies', 
-				'callback' => array($this->callbacks, 'taxonomies')
+				'callback' => array( $this->callbacks, 'taxonomies')
             ],
             [
                 'parent_slug' => 'plural_plugin', 
@@ -74,9 +81,55 @@ class Admin extends BaseController
 				'menu_title' => 'Widgets', 
 				'capability' => 'manage_options', 
 				'menu_slug' => 'plural_widgets', 
-				'callback' => array($this->callbacks, 'widgets')
+				'callback' => array( $this->callbacks, 'widgets')
             ]
         ];
+	}
+	
+	public function setSettings()
+	{
+		$args = [
+			[
+				"option_group" => "plural_plugin_group", 
+				"option_name" => "Text Example",
+				"callback" => array($this->callbacks, 'pluralPluginSettingsGroups')
+			]
+		];
+		return $this->settings_api->setSettings( $args );
+	}
 
-    }
+	public function setSections()
+	{
+		$args = [
+			[
+				"id" => 'plural_plugin_index',
+				"title" => 'Section',
+				"callback" => array($this->callbacks, 'pluralPluginAdminSection'),
+				"page" => 'plural_plugin'
+			]
+		];
+
+		return $this->settings_api->setSections( $args );
+	}
+
+	public function setFields()
+	{
+		$args = [
+			[
+				'id' => 'text_example',
+				'title' => 'Text Example',
+				'callback' => array( $this->callbacks, 'pluralPluginTextExample' ),
+				'page' => 'plural_plugin', //where this section lives.(the same one as page in section)
+				'section' => 'plural_plugin_index', //should be the same one as the id in section.
+				'args' => array(
+					'label_for' => 'text_example',
+					'class' => 'example-class'
+					)
+				]
+			];
+
+		return $this->settings_api->setFields( $args );
+	}
+
+
 }

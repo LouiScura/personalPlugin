@@ -13,11 +13,22 @@ class SettingsApi
 
     public $subpage = array();
 
+    public $settings;
+    
+    public $sections;
+
+    public $fields;
+
     public function register()
     {
         if( ! empty( $this->admin_pages ) ){
             add_action('admin_menu', array( $this, 'addAdminMenu' )); //if the array is not empty we add it to the wordpress admin menu
         }
+
+        if ( ! empty( $this->settings ) ){
+			add_action( 'admin_init', array( $this, 'registerCustomFields' ) ); //admin_init it's to initiliaze settings specific to the admin area
+        }
+
     }
 
     public function addPages( array $pages ) //we'll pass the pass the parameter on admin(register), will be all the pages that we want to add in wordpress admin menu.
@@ -76,6 +87,45 @@ class SettingsApi
 
         foreach ( $this->admin_subpages as $page ) {
 			add_submenu_page( $page['parent_slug'], $page['page_title'], $page['menu_title'], $page['capability'], $page['menu_slug'], $page['callback'] );
-		}
+        } 
+    }
+
+    public function setSettings( array $settings )
+    {
+        $this->settings = $settings; //the empty variable will be all the args that we're passing on admin file. 
+
+        return $this;
+    }
+
+    public function setSections( array $sections )
+    {
+        $this->sections = $sections;
+
+        return $this;;
+    }
+
+    public function setFields( array $fields )
+    {
+        $this->fields  = $fields;
+
+        return $this;
+    }
+
+    public function registerCustomFields()
+    {
+        //Register Settings
+        foreach( $this->settings as $setting ){
+            register_setting( $setting["option_group"], $setting["option_name"], ( isset( $setting["callback"] ) ? $setting["callback"] : '' ) );
+        }
+
+        //Add Settings Sections
+        foreach( $this->sections as $section ){
+            add_settings_section( $section["id"], $section["title"], ( isset( $section["callback"] ) ? $section["callback"] : '' ), $section["page"] );
+        }
+
+        //Add Fields
+        foreach( $this->fields as $field ){
+            add_settings_field( $field["id"], $field["title"], ( isset( $field["callback"] ) ? $field["callback"] : '' ), $field["page"], $field["section"], ( isset( $field["args"] ) ? $field["args"] : '' ) );
+        }
     }
 }
