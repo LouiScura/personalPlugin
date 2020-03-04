@@ -19,3 +19,4 @@ class Enqueue extends BaseController
         wp_enqueue_script('mypluginscript', $this->plugin_url . 'assets/script.min.js');
     }
 }
+//this is just a quickly test!
