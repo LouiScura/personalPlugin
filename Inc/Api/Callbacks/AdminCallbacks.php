@@ -39,16 +39,4 @@ class AdminCallbacks extends BaseController
         echo 'Check this beatiful section!';
     }
 
-    public function pluralPluginTextExample()
-	{
-		$value = esc_attr( get_option( 'text_example' ) );
-		echo '<input type="text" class="regular-text" name="text_example" value="' . $value . '" placeholder="Write Something Here!">';
-	}
-
-	public function pluralPluginFirstName()
-	{
-		$value = esc_attr( get_option( 'first_name' ) );
-		echo '<input type="text" class="regular-text" name="first_name" value="' . $value . '" placeholder="Write your First Name">';
-    }
-
 }

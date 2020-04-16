@@ -28,7 +28,7 @@ var sourcemaps = require('gulp-sourcemaps');
 /*
     PLUGIN PATHS
 */
-var styleSRC = 'src/scss/style.scss';
+var styleSRC = 'src/scss/mystyle.scss';
 var styleURL = './assets/';
 var mapURL = './';
 var jsSRC  = 'script.js';
@@ -107,7 +107,6 @@ function watch_files( done ){
     // watch( phpWatch, reload );
     watch( styleWatch, series('style') ), //if an update or change happen is gonna trigger style task
     watch( jsWatch, series('js') );
-    watch(phpWatch, )
     src( jsURL + 'script.min.js' )
         .pipe( notify({ message: ' Gulp is watching! '}));
 };
