@@ -91,50 +91,22 @@ class Admin extends BaseController
         ];
 	}
 	
+	/*
+	Settings -> database
+	*/
 	public function setSettings()
 	{
-		$args = [
-			[
-				"option_group" => "plural_plugin_settings", 
-				"option_name" => "cpt_manager",
-				"callback" => array($this->callbacks_mgnr, 'checkboxSanitize')
-			],
-			[
-				"option_group" => "plural_plugin_settings", 
-				"option_name" => "taxonomy_manager",
-				"callback" => array($this->callbacks_mgnr, 'checkboxSanitize')
-			],
-			[
-				"option_group" => "plural_plugin_settings", 
-				"option_name" => "media_widget",
-				"callback" => array($this->callbacks_mgnr, 'checkboxSanitize')
-			],
-			[
-				"option_group" => "plural_plugin_settings", 
-				"option_name" => "gallery_manager",
-				"callback" => array($this->callbacks_mgnr, 'checkboxSanitize')
-			],
-			[
-				"option_group" => "plural_plugin_settings", 
-				"option_name" => "testimonial_manager",
-				"callback" => array($this->callbacks_mgnr, 'checkboxSanitize')
-			],
-			[
-				"option_group" => "plural_plugin_settings", 
-				"option_name" => "login_manager",
-				"callback" => array($this->callbacks_mgnr, 'checkboxSanitize')
-			],
-			[
-				"option_group" => "plural_plugin_settings", 
-				"option_name" => "membership_manager",
-				"callback" => array($this->callbacks_mgnr, 'checkboxSanitize')
-			],
-			[
-				"option_group" => "plural_plugin_settings", 
-				"option_name" => "chat_manager",
-				"callback" => array($this->callbacks_mgnr, 'checkboxSanitize')
-			]
-		];
+		$args = array();
+
+		foreach($this->managers as $key => $value){
+
+			$args[] = [
+					'option_group' => 'plural_plugin_settings',
+					'option_name' => $key,
+					'callback' => array($this->callbacks_mgnr, 'checkboxSanitize')
+				];
+		}
+		
 		return $this->settings_api->setSettings( $args );
 	}
 
@@ -154,96 +126,26 @@ class Admin extends BaseController
 
 	public function setFields()
 	{
-		$args = [
-			[
-				'id' => 'cpt_manager',
-				'title' => 'Active CPT Manager',
-				'callback' => array( $this->callbacks_mgnr, 'checkboxField' ),
-				'page' => 'plural_plugin', //where this section lives.(the same one as page in section)
-				'section' => 'plural_plugin_index', //should be the same one as the id in section.
-				'args' => array(
-					'label_for' => 'cpt_manager',
-					'class' => 'ui-toggle'
+		$args = array();
+
+		foreach($this->managers as $key => $value){
+			
+			/*
+			If you dont specifed the [] ($args) you will constantly overwrite wherever date you have inside the array, 
+			Otherwise, if you put $args[] you will inject/add one custom field after an other.
+			*/
+			$args[] = [
+					'id' => $key,
+					'title' => $value,
+					'callback' => array( $this->callbacks_mgnr, 'checkboxField' ),
+					'page' => 'plural_plugin', //where this section lives.(the same one as page in section)
+					'section' => 'plural_plugin_index', //should be the same one as the id in section.
+					'args' => array(
+						'label_for' => $key,
+						'class' => 'ui-toggle' 
 					)
-			],
-			[
-				'id' => 'taxonomy_manager',
-				'title' => 'Active Taxonomy Manager',
-				'callback' => array( $this->callbacks_mgnr, 'checkboxField' ),
-				'page' => 'plural_plugin', //where this section lives.(the same one as page in section)
-				'section' => 'plural_plugin_index', //should be the same one as the id in section.
-				'args' => array(
-					'label_for' => 'taxonomy_manager',
-					'class' => 'ui-toggle'
-					)
-			],
-			[
-				'id' => 'media_widget',
-				'title' => 'Active Media Manager',
-				'callback' => array( $this->callbacks_mgnr, 'checkboxField' ),
-				'page' => 'plural_plugin', //where this section lives.(the same one as page in section)
-				'section' => 'plural_plugin_index', //should be the same one as the id in section.
-				'args' => array(
-					'label_for' => 'media_widget',
-					'class' => 'ui-toggle'
-					)
-			],
-			[
-				'id' => 'gallery_manager',
-				'title' => 'Active Gallery Manager',
-				'callback' => array( $this->callbacks_mgnr, 'checkboxField' ),
-				'page' => 'plural_plugin', //where this section lives.(the same one as page in section)
-				'section' => 'plural_plugin_index', //should be the same one as the id in section.
-				'args' => array(
-					'label_for' => 'gallery_manager',
-					'class' => 'ui-toggle'
-					)
-			],
-			[
-				'id' => 'testimonial_manager',
-				'title' => 'Active Testimonial Manager',
-				'callback' => array( $this->callbacks_mgnr, 'checkboxField' ),
-				'page' => 'plural_plugin', //where this section lives.(the same one as page in section)
-				'section' => 'plural_plugin_index', //should be the same one as the id in section.
-				'args' => array(
-					'label_for' => 'testimonial_manager',
-					'class' => 'ui-toggle'
-					)
-			],
-			[
-				'id' => 'login_manager',
-				'title' => 'Active Login Manager',
-				'callback' => array( $this->callbacks_mgnr, 'checkboxField' ),
-				'page' => 'plural_plugin', //where this section lives.(the same one as page in section)
-				'section' => 'plural_plugin_index', //should be the same one as the id in section.
-				'args' => array(
-					'label_for' => 'login_manager',
-					'class' => 'ui-toggle'
-					)
-			],
-			[
-				'id' => 'membership_manager',
-				'title' => 'Active Membership Manager',
-				'callback' => array( $this->callbacks_mgnr, 'checkboxField' ),
-				'page' => 'plural_plugin', //where this section lives.(the same one as page in section)
-				'section' => 'plural_plugin_index', //should be the same one as the id in section.
-				'args' => array(
-					'label_for' => 'membership_manager',
-					'class' => 'ui-toggle'
-					)
-			],
-			[
-				'id' => 'chat_manager',
-				'title' => 'Active Chat Manager',
-				'callback' => array( $this->callbacks_mgnr, 'checkboxField' ),
-				'page' => 'plural_plugin', //where this section lives.(the same one as page in section)
-				'section' => 'plural_plugin_index', //should be the same one as the id in section.
-				'args' => array(
-					'label_for' => 'chat_manager',
-					'class' => 'ui-toggle'
-					)
-			]
-		];
+				];					
+		}	
 
 		return $this->settings_api->setFields( $args );
 	}

@@ -55,6 +55,10 @@ $off: #8c8c8c;
 			width: $height;
 			height: $height;
 			border-radius: $height / 2;
+
+			> span {
+				display: none;
+			}	
 		}
 
 		&:hover,

@@ -5,7 +5,9 @@
 
 namespace Inc\Api\Callbacks; 
 
-class ManagerCallbacks
+use Inc\Base\BaseController;    
+
+class ManagerCallbacks extends BaseController 
 {
     public function checkboxSanitize( $input )
     {
@@ -25,7 +27,11 @@ class ManagerCallbacks
 
         echo '<div class="' . $classes . '">
                 <input type="checkbox" name="'. $name .'" id="'. $name .'" value="1" '. ($checkbox ? 'checked' : '').'>
-                <label for="'. $name .'"><div></div></label>
+                    <label for="'. $name .'">
+                    <div>
+                        <span>Plural Plugin</span>
+                    </div>
+                </label>
             </div>';
     }
 }
