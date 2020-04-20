@@ -11,7 +11,15 @@ class ManagerCallbacks extends BaseController
 {
     public function checkboxSanitize( $input )
     {
-        return (isset($input) ? true : false);
+        $output = [];
+
+        foreach( $this->managers as $key => $value){ //loop through all managers fields 
+            $output[$key] = isset( $input[$key] ) ? true : false; //check if are checks(specific key is on the form) 
+        }
+
+        echo $input[$key];
+
+        return $output; //array of data as wordpress wanted
     }
 
     public function adminSectionManager()
@@ -23,15 +31,16 @@ class ManagerCallbacks extends BaseController
     {
         $name = $args['label_for'];
         $classes = $args['class'];
-        $checkbox = get_option($name);
+        $option_name = $args['option_name'];
+        $checkbox = get_option(  $option_name );
 
         echo '<div class="' . $classes . '">
-                <input type="checkbox" name="'. $name .'" id="'. $name .'" value="1" '. ($checkbox ? 'checked' : '').'>
-                    <label for="'. $name .'">
+                <input type="checkbox" id="' . $name . '" name="' . $option_name . '[' . $name . ']" value="1" class="" ' . ($checkbox[$name] ? 'checked' : '') . '>
+                <label for="'. $name .'">
                     <div>
                         <span>Plural Plugin</span>
                     </div>
                 </label>
-            </div>';
+              </div>';
     }
 }

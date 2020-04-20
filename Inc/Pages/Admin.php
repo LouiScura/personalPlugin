@@ -93,19 +93,19 @@ class Admin extends BaseController
 	
 	/*
 	Settings -> database
+	We used to store each field with a specific id on database, what we're doing now is store everything on 'plural_plugin'
+	That way we don't occupate to many slots/rows on database. when you have the same or similar type of data,  can be store on one
+	singular settings group.
 	*/
 	public function setSettings()
 	{
-		$args = array();
-
-		foreach($this->managers as $key => $value){
-
-			$args[] = [
-					'option_group' => 'plural_plugin_settings',
-					'option_name' => $key,
-					'callback' => array($this->callbacks_mgnr, 'checkboxSanitize')
-				];
-		}
+		$args = [
+			[
+				'option_group' => 'plural_plugin_settings',
+				'option_name' => 'plural_plugin', //should be the same one as menu_slug and page on field.
+				'callback' => array($this->callbacks_mgnr, 'checkboxSanitize')
+			]
+		];
 		
 		return $this->settings_api->setSettings( $args );
 	}
@@ -123,7 +123,7 @@ class Admin extends BaseController
 
 		return $this->settings_api->setSections( $args );
 	}
-
+ 
 	public function setFields()
 	{
 		$args = array();
@@ -141,6 +141,7 @@ class Admin extends BaseController
 					'page' => 'plural_plugin', //where this section lives.(the same one as page in section)
 					'section' => 'plural_plugin_index', //should be the same one as the id in section.
 					'args' => array(
+						'option_name' => 'plural_plugin', //the same as database setting group
 						'label_for' => $key,
 						'class' => 'ui-toggle' 
 					)
