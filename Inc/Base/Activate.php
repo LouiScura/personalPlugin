@@ -9,6 +9,14 @@ class Activate
 {
     public static function activate(){
         flush_rewrite_rules();
-        // echo 'This is my'. PLUGIN_PATH;
+
+        if( get_option('plural_plugin') ){
+            return; //if the plural_plugin table is there already, we return it.(everything after a return stop working)
+        }
+
+        $default = array();
+
+        update_option('plural_plugin', $default); //if it's not there, we inject an empty array.
+         
     }
 }

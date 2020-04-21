@@ -32,10 +32,11 @@ class ManagerCallbacks extends BaseController
         $name = $args['label_for'];
         $classes = $args['class'];
         $option_name = $args['option_name'];
+        // $checked = isset($checkbox[$name] ? true : false);
         $checkbox = get_option(  $option_name );
 
         echo '<div class="' . $classes . '">
-                <input type="checkbox" id="' . $name . '" name="' . $option_name . '[' . $name . ']" value="1" class="" ' . ($checkbox[$name] ? 'checked' : '') . '>
+                <input type="checkbox" id="' . $name . '" name="' . $option_name . '[' . $name . ']" value="1" ' . ($checkbox[$name] ? 'checked' : '') . '>
                 <label for="'. $name .'">
                     <div>
                         <span>Plural Plugin</span>
