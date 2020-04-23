@@ -10,7 +10,7 @@ use \Inc\Base\BaseController;
 use \Inc\Api\Callbacks\AdminCallbacks;
 use \Inc\Api\Callbacks\ManagerCallbacks;
 
-class Admin extends BaseController
+class Dashboard extends BaseController
 {
 	public $settings_api;
 	
@@ -35,13 +35,14 @@ class Admin extends BaseController
 
         $this->setPages();
 
-		$this->setSubpages();
+		// $this->setSubpages();
 
 		$this->setSettings();
 		$this->setSections();
 		$this->setFields();
-        
-        $this->settings_api->addPages( $this->pages )->withSubPage( 'Dashboard' )->addSubPages( $this->subpages )->register();//addPages method inside SettingsApi class, this one need an array to be passed on the parameter, one the first method is done and because this method is returning($this, which is the entire class) we can keep calling the register(chaining methods).
+		
+		//we just call main page and sub-main-page.
+        $this->settings_api->addPages( $this->pages )->withSubPage( 'Dashboard' )->register();//addPages method inside SettingsApi class, this one need an array to be passed on the parameter, one the first method is done and because this method is returning($this, which is the entire class) we can keep calling the register(chaining methods).
 
     }
 
@@ -60,36 +61,6 @@ class Admin extends BaseController
         ];
 
     }
-
-    public function setSubpages()
-    {
-        $this->subpages = [
-            [
-                'parent_slug' => 'plural_plugin', 
-				'page_title' => 'Custom Post Types', 
-				'menu_title' => 'CPT', 
-				'capability' => 'manage_options', 
-				'menu_slug' => 'plural_cpt', 
-				'callback' => array( $this->callbacks, 'cpt')
-            ],
-            [
-                'parent_slug' => 'plural_plugin', 
-				'page_title' => 'Custom Taxonomies', 
-				'menu_title' => 'Taxonomies', 
-				'capability' => 'manage_options', 
-				'menu_slug' => 'plural_taxonomies', 
-				'callback' => array( $this->callbacks, 'taxonomies')
-            ],
-            [
-                'parent_slug' => 'plural_plugin', 
-				'page_title' => 'Custom Widgets', 
-				'menu_title' => 'Widgets', 
-				'capability' => 'manage_options', 
-				'menu_slug' => 'plural_widgets', 
-				'callback' => array( $this->callbacks, 'widgets')
-            ]
-        ];
-	}
 	
 	/*
 	Settings -> database

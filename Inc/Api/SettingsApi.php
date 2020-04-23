@@ -21,7 +21,10 @@ class SettingsApi
 
     public function register()
     {
-        if( ! empty( $this->admin_pages ) ){
+        /*
+        Is gonna look for admin_page(main page) or all the subpages related to the main page. 
+        */
+        if( ! empty( $this->admin_pages ) || ! empty( $this->admin_subpages )   ){
             add_action('admin_menu', array( $this, 'addAdminMenu' )); //if the array is not empty we add it to the wordpress admin menu
         }
 
@@ -38,7 +41,7 @@ class SettingsApi
         return $this;//returning the instance of the class in order to be able to call methods.(chaining methods)
     }
 
-    public function withSubPage( string $title = '' )
+    public function withSubPage( string $title = '' ) //wp requires an exactly sub-page of main page
     {    
         if( empty( $this->admin_pages) ){
             return $this; //whenever u have a return, it's stops everything after the return.

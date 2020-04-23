@@ -12,9 +12,17 @@ final class Init
     public static function get_services()
     {
         return[
-            Pages\Admin::class,
+            Pages\Dashboard::class, //this one need to goes first cause gets trigger all main pages, so the rest of the class can keep adding subpages.
             Base\SettingsLinks::class,
-            Base\Enqueue::class
+            Base\Enqueue::class,
+            Base\CustomPostTypeController::class,
+            Base\CustomTaxonomyController::class,
+            Base\MediaWidget::class,
+            Base\TestimonialController::class,
+            Base\LoginManager::class,
+            Base\GalleryManager::class,
+            Base\MembershipController::class,
+            Base\ChatController::class
         ];
     }
 
@@ -36,5 +44,4 @@ final class Init
         return $service;    
    }
 } 
-
 
