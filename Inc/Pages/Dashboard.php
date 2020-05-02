@@ -73,7 +73,7 @@ class Dashboard extends BaseController
 		$args = [
 			[
 				'option_group' => 'plural_plugin_settings',
-				'option_name' => 'plural_plugin', //should be the same one as menu_slug and page on field.
+				'option_name' => 'plural_plugin',
 				'callback' => array($this->callbacks_mgnr, 'checkboxSanitize')
 			]
 		];
@@ -88,7 +88,8 @@ class Dashboard extends BaseController
 				"id" => 'plural_plugin_index',
 				"title" => 'Section Manager',
 				"callback" => array($this->callbacks_mgnr, 'adminSectionManager'),
-				"page" => 'plural_plugin'
+				"page" => 'plural_plugin'//should be the same one as menu_slug and page on field
+
 			]
 		];
 
